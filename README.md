@@ -23,6 +23,9 @@ The computer picks a secret number between 1 and 100, and you try to guess it. Y
 | `GameSession.cs` | Core game logic: `GameSession` class, `GuessResult` enum, guess evaluation |
 | `InputParser.cs` | Input validation: parses and validates user-entered guesses |
 | `GuessingGame.csproj` | .NET project configuration |
+| `GuessingGame.Tests/GameSessionTests.cs` | xUnit tests for `GameSession` (8 tests) |
+| `GuessingGame.Tests/InputParserTests.cs` | xUnit tests for `InputParser` (8 tests) |
+| `GuessingGame.Tests/GuessingGame.Tests.csproj` | Test project configuration |
 
 ## Classes
 
@@ -68,7 +71,7 @@ Returns `true` if `input` is a whole number within `[min, max]`; otherwise `fals
 
 ## Requirements
 
-- [.NET SDK](https://dotnet.microsoft.com/download) (targets `net11.0`)
+- [.NET SDK](https://dotnet.microsoft.com/download) (targets `net10.0`)
 
 ## Build & Run
 
@@ -79,6 +82,21 @@ dotnet build
 # Run the game
 dotnet run
 ```
+
+## Testing
+
+The project includes 16 xUnit tests covering `GameSession` and `InputParser`. All tests pass.
+
+```bash
+# Run from the GuessingGame directory
+dotnet test GuessingGame.Tests/GuessingGame.Tests.csproj
+
+# Or from inside the test project directory
+cd GuessingGame.Tests
+dotnet test
+```
+
+**Test results:** 16 passed, 0 failed.
 
 ## Example Session
 
