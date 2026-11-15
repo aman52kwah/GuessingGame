@@ -21,5 +21,26 @@ class Program
     static void PlayRound()
     {
         int secret = Random.Shared.Next(MinNumber, MaxNumber + 1);
+        Console.WriteLine($"\nI'm thinking of a number from {MinNumber} to {MaxNumber}. You have {MaxTries} tries. ");
+        
+        for (int attempt = 0; attempt <= MaxTries; attempt++)
+        {
+            int guess = ReadInt($"Attempt {attempt}/{MaxTries}:", MinNumber , MaxNumber);
+            
+            if(guess == secret)
+            {
+                Console.WriteLine($"Correct! you got it in {attempt} tries.");
+                return; //leaves playRound entirely
+            }
+            else if (guess > secret)
+            {
+                Console.WriteLine("Too low.");
+            }
+            else
+            {
+                Console.WriteLine("Too High.");
+            }
+        }
+        Console.WriteLine($"Out of tires! The number was {secret}.");
     }
 }
