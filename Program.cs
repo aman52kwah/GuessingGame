@@ -1,4 +1,4 @@
-﻿using System;
+﻿namespace GuessingGame;
 
 class Program
 {
@@ -9,7 +9,7 @@ class Program
 
     static void Main()
     {
-        Console.WriteLine("===== Number Guessing Game ===");
+        Console.WriteLine("===== Welcome to Number Guessing Game ===");
 
         do
         {
@@ -21,40 +21,63 @@ class Program
     static void PlayRound()
     {
         int secret = Random.Shared.Next(MinNumber, MaxNumber + 1);
+        var session = new GameSession(secret, MaxTries);
         Console.WriteLine($"\nI'm thinking of a number from {MinNumber} to {MaxNumber}. You have {MaxTries} tries. ");
         
-        for (int attempt = 0; attempt <= MaxTries; attempt++)
+        while (!session.IsOver){}
         {
-            int guess = ReadInt($"Attempt {attempt}/{MaxTries}:", MinNumber , MaxNumber);
+            int? guess = ReadGuess($"Attempt {session.AttemptUsed + 1}/{session.MaxTries}: ");
+
+            if (guess is null)
+             return;
             
-            if(guess == secret)
-            {
-                Console.WriteLine($"Correct! you got it in {attempt} tries.");
-                return; //leaves playRound entirely
-            }
-            else if (guess > secret)
-            {
-                Console.WriteLine("Too low.");
-            }
-            else
-            {
-                Console.WriteLine("Too High.");
-            }
+
+            ShowResult(session.Guess(guess.Value), session);
+
         }
-        Console.WriteLine($"Out of tires! The number was {secret}.");
+
+        if (!session.IsWon)
+        {
+            Console.WriteLine($"out of tries! The number was {session.Secret}.");
+        }
+
     }
 
-    static int ReadInt(string prompt, int min , int max)
+
+    static void ShowResult(GuessResult result, GameSession session)
+    {
+        switch (result)
+        {
+            case GuessResult.Correct:
+            Console.WriteLine($"Correct! you got it in{session.AttemptUsed} tries");
+            break;
+
+            case GuessResult.TooLow:
+            Console.WriteLine($"Too Low. {session.AttemptsRemaining} tries left.");
+            break;
+
+            case GuessResult.TooHigh:
+            Console.WriteLine($"Too High. {session.AttemptsRemaining} tries left.");
+            break;
+            
+        }
+    }
+
+    // keeps asking until the user types a valid number. Return null if input ends
+
+    static int? ReadGuess(string prompt)
     {
         while (true)
         {
             Console.WriteLine(prompt);
-            string? input = Console.ReadLine();
+            string? line = Console.ReadLine();
 
-            if (int.TryParse(input, out int value) && value >= min && value <= max)
+            if (line is null)
+            return null;
             
-                return value;
-            Console.WriteLine($"Please enter a whole number from {min} to {max}. ");
+        if(InputParser.TryParseGuess(line, MinNumber, MaxNumber, out int value ))
+        return value;
+        Console.WriteLine($"Please a whole number from {MinNumber} to {MaxNumber}.");
 
         }
     }
