@@ -58,5 +58,10 @@ class Program
 
         }
     }
-    
+    static bool AskPlayAgain()
+    {
+        Console.Write("Play again? (y/n): ");
+        string? answer = Console.ReadLine();
+        return answer?.Trim().ToLower()=="y";
+    }
 }
