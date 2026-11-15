@@ -1,6 +1,6 @@
 
 
-using System.Security.Cryptography.X509Certificates;
+using System;
 
 namespace GuessingGame;
 
@@ -24,14 +24,14 @@ public GameSession(int secret, int maxTries)
         throw new ArgumentOutOfRangeException(nameof(maxTries), "maxTries must be at least 1.");
 
         Secret = secret;
-        maxTries = maxTries;
+        MaxTries = maxTries;
 
     }
 
         //getters
-        public int Secret{get;}
+        public int Secret { get; private set; }
         
-        public int MaxTries{ get;}
+        public int MaxTries { get; private set; }
 
         public int AttemptUsed {get; private set;}
 
@@ -61,9 +61,9 @@ public GameSession(int secret, int maxTries)
             return GuessResult.Correct;
         }
 
-        return guess < Secret ? GuessResult.TooLow: GuessResult.TooHigh;
+        return guess < Secret ? GuessResult.TooLow : GuessResult.TooHigh;
     }
-            
+        
         
     }
 

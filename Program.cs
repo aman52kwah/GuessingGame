@@ -1,4 +1,6 @@
-﻿namespace GuessingGame;
+﻿using System;
+
+namespace GuessingGame;
 
 class Program
 {
@@ -24,7 +26,7 @@ class Program
         var session = new GameSession(secret, MaxTries);
         Console.WriteLine($"\nI'm thinking of a number from {MinNumber} to {MaxNumber}. You have {MaxTries} tries. ");
         
-        while (!session.IsOver){}
+        while (!session.IsOver)
         {
             int? guess = ReadGuess($"Attempt {session.AttemptUsed + 1}/{session.MaxTries}: ");
 
@@ -75,9 +77,11 @@ class Program
             if (line is null)
             return null;
             
-        if(InputParser.TryParseGuess(line, MinNumber, MaxNumber, out int value ))
-        return value;
-        Console.WriteLine($"Please a whole number from {MinNumber} to {MaxNumber}.");
+        if (InputParser.TryParseGuess(line, MinNumber, MaxNumber, out int value))
+        {
+            return value;
+        }
+        Console.WriteLine($"Please enter a whole number from {MinNumber} to {MaxNumber}.");
 
         }
     }
